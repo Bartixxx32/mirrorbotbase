@@ -8,8 +8,7 @@ RUN apt-get -y install -y git g++ gcc autoconf automake \
     libsodium-dev libnautilus-extension-dev \
     libssl-dev libfreeimage-dev swig
     
-RUN apt-get -y install -y p7zip-full aria2 curl pv jq ffmpeg locales python3-lxml
-
+RUN apt-get -y install -y p7zip-full aria2 curl pv jq ffmpeg locales python3-lxml unzip
 # Installing mega sdk python binding
 ENV MEGA_SDK_VERSION '3.7.2'
 RUN git clone --depth 1 https://github.com/meganz/sdk.git -b release/v3.7.2 sdk && cd sdk &&\
