@@ -2,6 +2,8 @@ FROM python:3-slim-buster
 
 RUN apt-get update
 
+RUN apt-get upgrade -y
+
 RUN apt-get -y install -y git g++ gcc autoconf automake \
     m4 libtool qt4-qmake make libqt4-dev libcurl4-openssl-dev \
     libcrypto++-dev libsqlite3-dev libc-ares-dev \
