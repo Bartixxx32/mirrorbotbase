@@ -12,8 +12,8 @@ RUN apt-get -y install -y git g++ gcc autoconf automake \
     
 RUN apt-get -y install -y p7zip-full aria2 curl pv jq ffmpeg locales python3-lxml unzip
 # Installing mega sdk python binding
-ENV MEGA_SDK_VERSION '3.7.2'
-RUN git clone --depth 1 https://github.com/meganz/sdk.git -b release/v3.7.2 sdk && cd sdk &&\
+ENV MEGA_SDK_VERSION '3.7.3'
+RUN git clone --depth 1 https://github.com/meganz/sdk.git -b release/v3.7.3b sdk && cd sdk &&\
     ./autogen.sh && \
     ./configure --disable-silent-rules --enable-python --disable-examples && \
     make -j$(nproc --all) && cd bindings/python/ && \
