@@ -1,22 +1,21 @@
-FROM ubuntu:20.04
+FROM python:3-slim-buster
 
-WORKDIR /usr/src/app
-RUN chmod 777 /usr/src/app
-RUN apt-get -qq update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get -qq install -y tzdata aria2 git python3 python3-pip \
-    locales python3-lxml \
-    curl pv jq ffmpeg \
-    p7zip-full p7zip-rar
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt && \
-    apt-get -qq purge git
+RUN apt-get update
 
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-COPY . .
-COPY netrc /root/.netrc
-RUN chmod +x aria.sh
+RUN apt-get upgrade -y
 
-CMD ["bash","start.sh"]
+RUN apt-get -y install -y git g++ gcc autoconf automake \
+    m4 libtool qt4-qmake make libqt4-dev libcurl4-openssl-dev \
+    libcrypto++-dev libsqlite3-dev libc-ares-dev \
+    libsodium-dev libnautilus-extension-dev \
+    libssl-dev libfreeimage-dev swig
+    
+RUN apt-get -y install -y p7zip-full aria2 curl pv jq ffmpeg locales python3-lxml unzip
+# Installing mega sdk python binding
+ENV MEGA_SDK_VERSION '3.7.3'
+RUN git clone --depth 1 https://github.com/meganz/sdk.git -b release/v3.7.3b sdk && cd sdk &&\
+    ./autogen.sh && \
+    ./configure --disable-silent-rules --enable-python --disable-examples && \
+    make -j$(nproc --all) && cd bindings/python/ && \
+    python3 setup.py bdist_wheel && cd dist/ && \
+    pip3 install --no-cache-dir megasdk-$MEGA_SDK_VERSION-*.whl
