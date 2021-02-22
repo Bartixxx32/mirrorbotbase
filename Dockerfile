@@ -2,6 +2,11 @@ FROM python:3-slim-buster
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get -qq update
+
+RUN apt-get -qq upgrade -y
+
+
 RUN apt-get -qq update \
     && apt-get -qq install -y --no-install-recommends \
         git g++ gcc autoconf automake \
